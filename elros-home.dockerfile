@@ -14,4 +14,6 @@ COPY /website-code/ /app
 
 WORKDIR /app
 
+RUN sed -i 's/debug=True:.*/debug=True:, host='0.0.0.0' /g' app.py
+
 CMD python3 app.py
