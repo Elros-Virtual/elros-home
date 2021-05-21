@@ -23,9 +23,9 @@ def ianroberts():
     return render_template('ian-roberts.html')
 
 
-@app.route('/toby-skyes')
+@app.route('/toby-sykes')
 def tobyskyes():
-    return render_template('toby-skyes.html')
+    return render_template('toby-sykes.html')
 
 
 if __name__ == '__main__':
