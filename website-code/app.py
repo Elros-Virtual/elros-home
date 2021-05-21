@@ -53,6 +53,11 @@ def mobileapps():
     return render_template('generic.html')
 
 
+@app.route('/toby-sykes')
+def tobyskyes():
+    return render_template('toby-sykes.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
     # app.run(debug=True)
