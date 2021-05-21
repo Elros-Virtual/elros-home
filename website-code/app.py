@@ -23,5 +23,10 @@ def ianroberts():
     return render_template('ian-roberts.html')
 
 
+@app.route('/toby-skyes')
+def tobyskyes():
+    return render_template('toby-skyes.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
