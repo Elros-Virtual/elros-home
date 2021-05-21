@@ -1,5 +1,7 @@
 FROM ubuntu:latest
 
+ARG host=", host='0.0.0.0"
+
 RUN apt-get update
 
 RUN apt-get install -y python3.8
@@ -14,7 +16,7 @@ COPY /website-code/ /app
 
 WORKDIR /app
 
-RUN sed -i 's/debug=True:.*/debug=True:, host='0.0.0.0' /g' app.py
+RUN sed -i 's/debug=True:.*/debug=True:$host/g' app.py
 
 RUN cat app.py
 
