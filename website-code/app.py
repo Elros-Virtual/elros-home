@@ -43,21 +43,11 @@ def cicd():
     return render_template('cicd.html')
 
 
-@app.route('/digitalsolutions')
-def digitalsolutions():
-    return render_template('digitalsolutions.html')
-
-
 @app.route('/consulting')
 def consulting():
     return render_template('consulting.html')
 
 
-@app.route('/mobileapps')
-def mobileapps():
-    return render_template('mobileapps.html')
-
-
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
-    # app.run(debug=True)
+    #app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
