@@ -1978,6 +1978,8 @@ input, select, textarea {
 
 /* Features */
 
+
+
 	.features {
 		display: -moz-flex;
 		display: -webkit-flex;
@@ -2166,6 +2168,10 @@ input, select, textarea {
 				-ms-transition-delay: 3s;
 				transition-delay: 3s;
 			}
+
+			.features .section-wide {
+				width: 100% !important;
+				}
 
 		.features.inactive section .icon {
 			-moz-transform: scale(0.5);
