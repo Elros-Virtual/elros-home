@@ -63,13 +63,13 @@ def consulting():
     return render_template('consulting.html')
 
 
-@app.route('/register')
-def register():
-    return render_template('register.html')
-
-
-@app.route('/login', methods=["POST", "GET"])
+@app.route('/login')
 def login():
+    return render_template('login.html')
+
+
+@app.route('/register', methods=["POST", "GET"])
+def register():
     if request.method == "POST":
         session.permanent - True
         user = request.form["username"]
@@ -88,8 +88,8 @@ def login():
     else:
         if "user" in session:
             flash("Already Logged in")
-            return redirect(url_for("/"))
-        return render_template('login.html')
+            return redirect(url_for("login"))
+        return render_template('register.html')
 
 
 @app.route('/logout')
