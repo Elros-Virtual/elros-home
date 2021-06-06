@@ -69,12 +69,21 @@ def login():
         session.permanent = True
         user = request.form["user"]
         session["user"] = user
+
+        found_user = users.query.filter_by(name=user).first()
+        if found_user:
+            session["email"] = found_user.email
+        else:
+            usr = users(user, "")
+            db.session.add(usr)
+            db.session.commit()
+
         flash("Login Succesful!")
-        return redirect(url_for("user"))
+        return redirect(url_for("myaccount"))
     else:
         if "user" in session:
             flash("Already logged in")
-            return redirect(url_for("user"))
+            return redirect(url_for("myaccount"))
         return render_template('login.html')
 
 
@@ -82,26 +91,32 @@ def login():
 # def register():
 #     if request.method == "POST":
 #         user = request.form["user"]
+#         email = request.form["email"]
 #         session["user"] = user
+#         session["email"] = email
+
+#         found_user = users.query.filter_by(name=user).first()
+#         found_user.email = email
+#         if found_user:
+#             session["email"] = found_user.email
+#             session["user"] = found_user.user
+#         else:
+#             usr = users(user, "")
+#             db.session.add(usr)
+#             db.session.commit()
+
 #         return redirect(url_for(login))
 #     else:
 #         return render_template('register.html')
 
 
-@app.route('/user', methods=["POST", "GET"])
-def user():
-    if "user" in session:
-        user = session["user"]
-        return f"<h1>{user}</h1>"
-    else:
-        return redirect(url_for("login"))
-
-
-@app.route('/myaccount')
+@app.route('/myaccount', methods=["POST", "GET"])
 def myaccount():
+    email = None
     if "user" in session:
         user = session["user"]
-        return render_template('myaccount.html')
+        # email = session["email"]
+        return render_template('myaccount.html', user=user)
     else:
         return redirect(url_for("login"))
 
@@ -110,6 +125,7 @@ def myaccount():
 def logout():
     flash("You have been logged out!", "info")
     session.pop("user", None)
+    session.pop("email", None)
     return redirect(url_for("login"))
 
 
@@ -119,5 +135,6 @@ def database():
 
 
 if __name__ == '__main__':
+    db.create_all()
     #app.run(debug=True, host='0.0.0.0')
     app.run(debug=True)
