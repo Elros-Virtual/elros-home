@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, session, flash
 from flask.helpers import url_for
 from werkzeug.utils import redirect
-from datetime import timedelta
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.secret_key = "hello"
-app.permanent_session_lifetime = timedelta(days=5)
+# app.permanent_session_lifetime = datetime(days=5)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config["SWLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -14,13 +14,12 @@ db = SQLAlchemy(app)
 
 
 class users(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(100))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, name, email):
-        self.name = name
-        self.email = email
+    def __init__(self):
+        return '<name %r>' % self.id
 
 
 @app.route('/')
@@ -65,26 +64,26 @@ def consulting():
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
-    if request.method == "POST":
-        session.permanent = True
-        user = request.form["user"]
-        session["user"] = user
+    # if request.method == "POST":
+    #     session.permanent = True
+    #     user = request.form["user"]
+    #     session["user"] = user
 
-        found_user = users.query.filter_by(name=user).first()
-        if found_user:
-            session["email"] = found_user.email
-        else:
-            usr = users(user, "")
-            db.session.add(usr)
-            db.session.commit()
+    #     found_user = users.query.filter_by(name=user).first()
+    #     if found_user:
+    #         session["email"] = found_user.email
+    #     else:
+    #         usr = users(user, "")
+    #         db.session.add(usr)
+    #         db.session.commit()
 
-        flash("Login Succesful!")
-        return redirect(url_for("myaccount"))
-    else:
-        if "user" in session:
-            flash("Already logged in")
-            return redirect(url_for("myaccount"))
-        return render_template('login.html')
+    #     flash("Login Succesful!")
+    #     return redirect(url_for("myaccount"))
+    # else:
+    #     if "user" in session:
+    #         flash("Already logged in")
+    #         return redirect(url_for("myaccount"))
+    return render_template('login.html')
 
 
 # @app.route('/register', methods=["POST", "GET"])
@@ -108,6 +107,24 @@ def login():
 #         return redirect(url_for(login))
 #     else:
 #         return render_template('register.html')
+
+@app.route("/register", methods=["POST", "GET"])
+def register():
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        new_user = users(name=name)
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect('/register')
+        except:
+            return "There was an error"
+
+    else:
+        user_list = users.query.order_by(users.date_created)
+        return render_template('register.html', user_list=user_list)
 
 
 @app.route('/myaccount', methods=["POST", "GET"])
