@@ -1,23 +1,23 @@
 from flask import Flask, render_template, request
-from flask_sendgrid import SendGrid
+# from flask_sendgrid import SendGrid
 
 app = Flask(__name__)
-app.config['SENDGRID_API_KEY'] = 'apikey'
-app.config['SENDGRID_DEFAULT_FROM'] = 'hello@elrosvirtual.co.uk'
-mail = SendGrid(app)
+# app.config['SENDGRID_API_KEY'] = 'apikey'
+# app.config['SENDGRID_DEFAULT_FROM'] = 'hello@elrosvirtual.co.uk'
+# mail = SendGrid(app)
 
 
 @app.route('/', methods=["POST", "GET"])
 def index():
-    if request.method == "POST":
-        name = request.form.get("name")
-        email = request.form.get("email")
-        message = request.form.get("message")
+    # if request.method == "POST":
+    #     name = request.form.get("name")
+    #     email = request.form.get("email")
+    #     message = request.form.get("message")
 
-        mail.send_email(to_email=email,
-                        subject='Thank you for your Contact', text=message)
+    #     mail.send_email(to_email=email,
+    #                     subject='Thank you for your Contact', text=message)
 
-        return render_template('index.html')
+    #     return render_template('index.html')
 
     # else:
     return render_template('index.html')
