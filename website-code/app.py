@@ -53,9 +53,9 @@ def hosting():
     return render_template('hosting.html')
 
 
-@app.route('/cicd')
-def cicd():
-    return render_template('cicd.html')
+@app.route('/techblog')
+def techblog():
+    return render_template('techblog.html')
 
 
 @app.route('/consulting')
