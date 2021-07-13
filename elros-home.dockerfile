@@ -10,6 +10,8 @@ RUN apt install -y python3-pip
 
 RUN pip3 install flask
 
+RUN pip3 install flask_sendgrid
+
 RUN mkdir /app
 
 COPY /website-code/ /app
